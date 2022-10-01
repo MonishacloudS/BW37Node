@@ -72,7 +72,7 @@ router.post("/", async (request, response) => {
 router.put("/:id", async (request, response) =>{
     const { id } = request.params;
     const updateMovie = request.body;
-    const result = await updateMovieById(updateMovie, id)
+    const result = await updateMovieById(id, updateMovie)
     response.send(result)
 });
 
