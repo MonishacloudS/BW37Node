@@ -19,3 +19,6 @@ export async function addMovies(newMovies) {
 export async function updateMovieById(id, updateMovie){
     return await client.db("b37wd").collection("movies").updateOne({ id: id }, { $set: updateMovie });
 }
+
+
+
