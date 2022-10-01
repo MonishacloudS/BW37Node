@@ -6,6 +6,8 @@
 import express, { request, response } from "express"
 import { MongoClient } from "mongodb";
 import dotenv from 'dotenv' 
+import { moviesRouter } from "./routes/movies.js";
+import { deleteMovieById, getMovieById, getAllMovies, addMovies } from "./helper.js";
 
 
 dotenv.config()
@@ -105,20 +107,21 @@ async function createConnection() {
     return client;
 }
 
-const client = await createConnection();
+export const client = await createConnection();
 
 
 app.use(express.json())
 
-
-
-
-
-
-
 app.get("/", (request, response) => {
     response.send("hello everyone")
 });
+
+
+app.use('/movies', moviesRouter)
+
+
+
+
 
 
 //task- get movies
@@ -220,40 +223,6 @@ app.get("/", (request, response) => {
 //     response.send(movie)
 // });
 
-
-//delate a movie id
-
-
-app.delete("/movies/:id", async (request, response) => {
-    const { id } = request.params;
-    console.log(id)
-    const movie = await client
-        .db("b37wd")
-        .collection("movies")
-        .deleteOne({ id: id })
-    response.send(movie)
-});
-
-
-//if we want to get a deleted movie it should show a msg called "no movie found" and a 404 error. 
-//and this code is also responsible for getting movie by id also
-
-
-app.get("/movies/:id", async (request, response) => {
-    const { id } = request.params;
-    console.log(id)
-    const movie = await client
-        .db("b37wd")
-        .collection("movies")
-        .findOne({ id: id })
-
-    console.log(movie)  //totally optional
-    movie
-        ? response.send(movie)
-        : response.status(404).send({ message: "No movie found" });
-});
-
-
 //so far tha all movies were from local ,now movies should come from mongpdb  "localhost:9000/movies"
 
 // app.get("/movies", async (request, response) =>{
@@ -264,35 +233,12 @@ app.get("/movies/:id", async (request, response) => {
 // });
 
 
-//along with the movies we need to get language and rating too
-
-app.get("/movies", async (request, response) => {
-    if (request.query.rating) {
-        request.query.rating = +request.query.rating;
-    }
-    console.log(request.query)
-    const movie = await client.db("b37wd").collection("movies").find(request.query).toArray();
-    response.send(movie);
-});
-
-
-
-//Post method => isnert data into db
-
-app.post("/movies", async (request, response) => {
-    const newMovies = request.body;
-    console.log(newMovies);    //totally optional
-    const result = await client.db("b37wd").collection("movies").insertMany(newMovies)
-    response.send(result);
-});
-
-
-
-
-
 //create server
 
 app.listen(PORT, () => console.log("server started on port", PORT));
+
+
+
 
 
 
