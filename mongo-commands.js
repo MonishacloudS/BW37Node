@@ -97,7 +97,7 @@ db.movies.find({}, { _id: 0, name: 1, summary: 1 }).pretty();
 
 db.movies.find({}, { _id: 1, name: 0, summary: 0 }).pretty();
 
-db.movies.find({}, { _id: 1, name: 0, summary: 0 }).pretty();
+db.movies.find({}, { _id: 0, name: 0, summary: 0 }).pretty();
 
 
 //Sorting - sort 
@@ -118,11 +118,15 @@ db.movies.find({},{_id: 0, name: 1, rating: 1 } ).sort({ name: 1 }).pretty()
 
 //limit
 
+
 db.movies.find({}).sort( { rating: -1} ).limit(2).pretty()
+db.movies.find({}).sort( { rating: 1} ).limit(2).pretty()
+
 
 //skip
 
 db.movies.find({}).sort( { rating: -1} ).skip(2).pretty()
+db.movies.find({}).sort( { rating: 1} ).skip(2).pretty()
 
 //combine projection and sorting
 
@@ -145,14 +149,23 @@ db.orders.insertMany([
     { _id: 5, productName: "Iron rod", status: "urgent", quantity: 10},
 ])
 
+
+db.orders.find({}).pretty()
+
+
+
+
 //stage 1
 
 db.orders.aggregate([{ $match: { status: "urgent" }}]);
+db.orders.aggregate([{ $match: { status: "new" }}]);
+db.orders.aggregate([{ $match: { productName: "Iron rod" }}]);
+db.orders.aggregate([{ $match: { productName: "Steel beam" }}]);
 
 //stage 2 
 // $match $group $sum - aggregate operators 
 
-db.orders.aggregate([{ $match: { status: "urgent" }}, { $group: {_id: "$productName", totalUrgentQuantity: { $sum: "$quantity "} } }]);
+db.orders.aggregate([{ $match: { status: "urgent" }}, { $group: {_id: "$productName", totalUrgentQuantity: { $sum: "$quantity"} } }]);
 
 //Expected output
 // id : "steel beam" totalUrgentQuanity: 50
@@ -181,3 +194,66 @@ db.movies.find({ rating: { $gt: 8.5 } }, { name: 1, rating: 1}).pretty();
 
 
 db.movies.deleteMany({ rating: { $gt: 8.5 } })
+
+
+
+
+
+
+
+
+
+
+// Advantage of MongoDB - Non relational DB
+
+// store data as you want 
+
+
+// Feature in SQL - JOINs
+
+// Features of MongoDb
+// 1. Joins not required
+// 2. Schema - Blueprint of a table / Shape of data (Flexible Schema)
+//     Types 
+//      1. Schema 1
+//      2. Schema 2
+//      3. Schema 3
+  
+// 3. Data stored in mongoDB is BSON  - Binary JSON 
+
+// Why not JSON 
+
+// JSON -> BSON (smart & efficient store)
+
+// MongoDb store in BSON format - retrive in which format - JSON format
+
+// reduce space - it uses BSON format to store data 
+
+// CRUD operation
+// ---------------
+//   1. CREATE  - insert - add - post
+//           - 2 commands to INSERT - one doc or multiple doc you can insert
+//           commands - insertOne(data, options)
+//                      insertMany(data, options)
+                     
+//   2. UPDATE    - put
+//      commands - updateOne(data, options)
+//                 updateMany(data, options)
+//                 replaceOne(data, options)
+//   3. READ  -get
+//     commands - find(filter, options)
+//                findOne(filter, options)
+//   4. DELETE  - delete
+//      commands  - deleteOne(data, options)
+//                  deleteMany(data, options) 
+  
+
+  
+//   methods
+// ----------
+//  1. GET
+//  2. POST
+//  3. PUT
+//  4. DELETE
+ 
+ 

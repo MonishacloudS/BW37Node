@@ -49,6 +49,9 @@ const quote2 =  "Live more, wory Less ";
 //     console.log("The content of the file is:", data);
 // })
 
+
+//append a file
+
 // const niceQuote = "\nMake everyday a better one";
 
 
