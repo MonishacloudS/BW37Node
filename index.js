@@ -8,6 +8,9 @@ import { MongoClient } from "mongodb";
 import dotenv from 'dotenv' 
 import { moviesRouter } from "./routes/movies.js";
 import { deleteMovieById, getMovieById, getAllMovies, addMovies } from "./helper.js";
+import { userRouter } from "./routes/user.js";
+import bcrypt from "bcrypt";
+
 
 
 dotenv.config()
@@ -118,6 +121,8 @@ app.get("/", (request, response) => {
 
 
 app.use('/movies', moviesRouter)
+
+app.use('/user', userRouter)
 
 
 
