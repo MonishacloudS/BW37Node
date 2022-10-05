@@ -5,15 +5,9 @@ import { getMovieById } from "../helper.js";
 import { getAllMovies } from "../helper.js";
 import { addMovies } from "../helper.js";
 import { updateMovieById } from "../helper.js";
+import { auth } from "../middleware/auth.js";
 
 const router = express.Router();
-
-
-
-
-
-
-
 
 //delete a movie id
 

@@ -2,7 +2,7 @@
 //  const express = require('express');  //3rd party package
 //  const { MongoClient } = require('mongodb');
 
-
+import cors from "cors";
 import express, { request, response } from "express"
 import { MongoClient } from "mongodb";
 import dotenv from 'dotenv' 
@@ -17,7 +17,9 @@ dotenv.config()
 console.log(process.env.MONGO_URL)
 
 const app = express();
+app.use(cors())
 const PORT = process.env.PORT;
+const MONGO_URL = process.env.MONGO_URL;
 
 const movies = [
     {
@@ -90,19 +92,6 @@ const movies = [
     }
 ]
 
-
-
-
-
-
-
-const MONGO_URL = process.env.MONGO_URL
-
-
-
-
-
-
 async function createConnection() {
     const client = new MongoClient(MONGO_URL)
     await client.connect();
@@ -124,6 +113,9 @@ app.use('/movies', moviesRouter)
 
 app.use('/user', userRouter)
 
+//create server
+
+app.listen(PORT, () => console.log("server started on port", PORT));
 
 
 
@@ -238,9 +230,6 @@ app.use('/user', userRouter)
 // });
 
 
-//create server
-
-app.listen(PORT, () => console.log("server started on port", PORT));
 
 
 
